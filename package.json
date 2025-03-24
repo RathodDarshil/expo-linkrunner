@@ -1,0 +1,51 @@
+{
+    "name": "expo-linkrunner",
+    "version": "1.0.0",
+    "description": "Expo Package for linkrunner.io",
+    "main": "build/index.js",
+    "types": "build/index.d.ts",
+    "scripts": {
+        "build": "expo-module build",
+        "clean": "expo-module clean",
+        "lint": "expo-module lint",
+        "test": "expo-module test",
+        "_prepare": "expo-module prepare",
+        "prepublishOnly": "expo-module prepublishOnly",
+        "expo-module": "expo-module"
+    },
+    "keywords": [
+        "expo",
+        "react-native",
+        "linkrunner",
+        "attribution",
+        "analytics",
+        "deeplink"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/RathodDarshil/expo-linkrunner.git"
+    },
+    "author": "Darshil Rathod <darshilrathod0@gmail.com> (https://github.com/RathodDarshil)",
+    "license": "MIT",
+    "homepage": "https://github.com/RathodDarshil/expo-linkrunner#readme",
+    "dependencies": {
+        "expo-application": "~5.8.0",
+        "expo-device": "~6.0.0",
+        "expo-linking": "~6.2.0",
+        "expo-network": "~5.8.0",
+        "expo-secure-store": "~12.8.0",
+        "expo-tracking-transparency": "~3.3.0",
+        "expo-web-browser": "~12.8.0"
+    },
+    "devDependencies": {
+        "expo": "^52.0.37",
+        "expo-module-scripts": "^4.0.4",
+        "typescript": "^5.7.3"
+    },
+    "peerDependencies": {
+        "expo": ">=52.0.0"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}
