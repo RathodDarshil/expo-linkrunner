@@ -12,7 +12,6 @@ Expo Package for [linkrunner.io](https://www.linkrunner.io) - Track and analyze 
     -   [Set User Data](#set-user-data)
     -   [Trigger Deeplink](#trigger-deeplink-for-deferred-deep-linking)
     -   [Track Event](#track-event)
-    -   [Process Google Analytics](#process-google-analytics)
     -   [Capture Payment](#capture-payment)
     -   [Remove Payment](#remove-payment)
 -   [Function Placement Guide](#function-placement-guide)
@@ -24,7 +23,7 @@ Expo Package for [linkrunner.io](https://www.linkrunner.io) - Track and analyze 
 Install the package and its required dependencies:
 
 ```sh
-npx expo install expo-linkrunner expo-device expo-application expo-network expo-secure-store expo-linking expo-tracking-transparency expo-web-browser
+npx expo install expo-linkrunner
 ```
 
 ## Configuration
@@ -47,10 +46,6 @@ For iOS, to access the advertising identifier (IDFA), add this to your `app.json
     }
 }
 ```
-
-### Web Support
-
-The package provides limited functionality on web platforms. Device information and certain tracking features may be restricted in web environments.
 
 ## Usage
 
@@ -171,24 +166,6 @@ const trackEvent = async () => {
         "event_name", // Name of the event
         { key: "value" } // Optional: Additional JSON data for the event
     );
-};
-```
-
-### Process Google Analytics
-
-**Note:** This functionality has limitations in Expo compared to the React Native native package.
-
-```js
-import analytics from "@react-native-firebase/analytics";
-import linkrunner from "expo-linkrunner";
-
-// Limited functionality in Expo
-const init = async () => {
-    const initData = await linkrunner.init("PROJECT_TOKEN");
-
-    if (analytics) {
-        await linkrunner.processGoogleAnalytics(analytics);
-    }
 };
 ```
 
