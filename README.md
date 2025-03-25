@@ -255,14 +255,6 @@ Here's where to place each function in your application:
 | `linkrunner.capturePayment`  | In your payment processing flow                                         | When a user makes a payment                              |
 | `linkrunner.removePayment`   | In your payment cancellation flow                                       | When a payment needs to be removed                       |
 
-## Differences from Native Package
-
-This Expo package has some limitations compared to the native React Native version:
-
-1. **Install Referrer Information**: Limited access to install referrer data on Android
-2. **Google Analytics Integration**: Reduced ability to track GCLID from install referrer
-3. **Device Information**: Some device-specific details may be less comprehensive
-
 For apps requiring these advanced features, consider using the React Native version with Expo development builds.
 
 ## Facing issues during integration?

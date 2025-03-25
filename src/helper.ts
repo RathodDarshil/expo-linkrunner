@@ -66,8 +66,7 @@ const device_data = async (): Promise<Record<string, any>> => {
             gaid: Platform.OS === "android" ? await safeGet(Application.getAndroidId) : null,
             idfv: Platform.OS === "ios" ? await safeGet(Application.getIosIdForVendorAsync) : null,
 
-            // Limited installation referrer info
-            install_ref: null, // Not available in pure Expo
+            install_ref: await safeGet(Application.getInstallReferrerAsync),
 
             // User agent - this method doesn't exist in the current API
             // If you need user agent, consider alternative approaches
