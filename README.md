@@ -232,8 +232,6 @@ Here's where to place each function in your application:
 | `linkrunner.capturePayment`  | In your payment processing flow                                         | When a user makes a payment                              |
 | `linkrunner.removePayment`   | In your payment cancellation flow                                       | When a payment needs to be removed                       |
 
-For apps requiring these advanced features, consider using the React Native version with Expo development builds.
-
 ## Facing issues during integration?
 
 Mail us at darshil@linkrunner.io
