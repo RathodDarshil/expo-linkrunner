@@ -66,7 +66,8 @@ const device_data = async (): Promise<Record<string, any>> => {
             gaid: Platform.OS === "android" ? await safeGet(Application.getAndroidId) : null,
             idfv: Platform.OS === "ios" ? await safeGet(Application.getIosIdForVendorAsync) : null,
 
-            install_ref: await safeGet(Application.getInstallReferrerAsync),
+            // Only call getInstallReferrerAsync on Android
+            install_ref: Platform.OS === "android" ? await safeGet(Application.getInstallReferrerAsync) : null,
 
             // User agent - this method doesn't exist in the current API
             // If you need user agent, consider alternative approaches
