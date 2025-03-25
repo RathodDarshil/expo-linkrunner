@@ -1,6 +1,6 @@
 {
     "name": "expo-linkrunner",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "description": "Expo Package for linkrunner.io",
     "main": "build/index.js",
     "types": "build/index.d.ts",
