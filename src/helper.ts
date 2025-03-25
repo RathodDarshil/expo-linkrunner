@@ -1,7 +1,7 @@
 import * as Application from "expo-application";
 import * as Device from "expo-device";
 import * as Network from "expo-network";
-import * as SecureStore from "expo-secure-store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as TrackingTransparency from "expo-tracking-transparency";
 import { Platform } from "react-native";
 
@@ -101,17 +101,17 @@ const getAdvertisingIdentifier = async (): Promise<string | null> => {
 async function getLinkRunnerInstallInstanceId(): Promise<string> {
     try {
         // Try to get the existing ID
-        let installInstanceId = await SecureStore.getItemAsync(STORAGE_KEY);
+        let installInstanceId = await AsyncStorage.getItem(STORAGE_KEY);
 
         // If the ID doesn't exist, generate a new one and store it
         if (installInstanceId === null) {
             installInstanceId = generateRandomString(ID_LENGTH);
-            await SecureStore.setItemAsync(STORAGE_KEY, installInstanceId);
+            await AsyncStorage.setItem(STORAGE_KEY, installInstanceId);
         }
 
         return installInstanceId;
     } catch (error) {
-        console.error("Error accessing SecureStore:", error);
+        console.error("Error accessing AsyncStorage:", error);
         return "ERROR_GENERATING_INSTALL_INSTANCE_ID";
     }
 }
@@ -127,7 +127,7 @@ function generateRandomString(length: number): string {
 // Functions for deeplink URL storage
 async function setDeeplinkURL(deeplink_url: string) {
     try {
-        await SecureStore.setItemAsync(DEEPLINK_URL_STORAGE_KEY, deeplink_url);
+        await AsyncStorage.setItem(DEEPLINK_URL_STORAGE_KEY, deeplink_url);
     } catch (error) {
         console.error("Error setting deeplink URL:", error);
     }
@@ -135,7 +135,7 @@ async function setDeeplinkURL(deeplink_url: string) {
 
 async function getDeeplinkURL(): Promise<string | null> {
     try {
-        return await SecureStore.getItemAsync(DEEPLINK_URL_STORAGE_KEY);
+        return await AsyncStorage.getItem(DEEPLINK_URL_STORAGE_KEY);
     } catch (error) {
         console.error("Error getting deeplink URL:", error);
         return null;
