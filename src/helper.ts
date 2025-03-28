@@ -85,9 +85,18 @@ const device_data = async (): Promise<Record<string, any>> => {
 const getAdvertisingIdentifier = async (): Promise<string | null> => {
     if (Platform.OS === "ios") {
         try {
+            const isAvailable = await TrackingTransparency.isAvailable();
+            if (!isAvailable) {
+                return null;
+            }
+            const { status: initialStatus } = await TrackingTransparency.getTrackingPermissionsAsync();
+            if (initialStatus === "granted") {
+                // Use the correct getAdvertisingId method from TrackingTransparency
+                return await TrackingTransparency.getAdvertisingId();
+            }
             // Request tracking permission first
-            const { status } = await TrackingTransparency.requestTrackingPermissionsAsync();
-            if (status === "granted") {
+            const { status: requestStatus } = await TrackingTransparency.requestTrackingPermissionsAsync();
+            if (requestStatus === "granted") {
                 // Use the correct getAdvertisingId method from TrackingTransparency
                 return await TrackingTransparency.getAdvertisingId();
             }
