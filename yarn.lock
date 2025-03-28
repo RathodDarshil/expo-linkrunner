@@ -5093,7 +5093,7 @@ __metadata:
     expo-linking: ~6.2.0
     expo-module-scripts: ^4.0.4
     expo-network: ~5.8.0
-    expo-tracking-transparency: ~3.3.0
+    expo-tracking-transparency: ^5.1.1
     expo-web-browser: ~12.8.0
     typescript: ^5.7.3
   peerDependencies:
@@ -5166,12 +5166,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-tracking-transparency@npm:~3.3.0":
-  version: 3.3.0
-  resolution: "expo-tracking-transparency@npm:3.3.0"
+"expo-tracking-transparency@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "expo-tracking-transparency@npm:5.1.1"
   peerDependencies:
     expo: "*"
-  checksum: 44112f95bc624c8fadf1ae53969027b849003fdfadba66be7351198d0da82a09602652a6790b617767a068b3a94a34f4bd1f4b8d92734387345be94e0194c2aa
+    react-native: "*"
+  checksum: fd33995759b073b7a2569edae147ef2103f1bf31ff03f49f7d7e2a5d72ab2e84c200a7028d140203060a3dbcf4feeedd5e074526e95d8f5043683b0b093d52e0
   languageName: node
   linkType: hard
 

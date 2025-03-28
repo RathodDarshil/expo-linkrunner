@@ -64,7 +64,9 @@ const device_data = async (): Promise<Record<string, any>> => {
             // Advertising IDs with privacy controls
             idfa: Platform.OS === "ios" ? await getAdvertisingIdentifier() : null,
             gaid: Platform.OS === "android" ? await safeGet(Application.getAndroidId) : null,
-            idfv: Platform.OS === "ios" ? await safeGet(Application.getIosIdForVendorAsync) : null,
+
+            // For IDFV, use dedicated function
+            idfv: Platform.OS === "ios" ? await getIosIdentifierForVendor() : null,
 
             // Only call getInstallReferrerAsync on Android
             install_ref: Platform.OS === "android" ? await safeGet(Application.getInstallReferrerAsync) : null,
@@ -83,15 +85,28 @@ const device_data = async (): Promise<Record<string, any>> => {
 const getAdvertisingIdentifier = async (): Promise<string | null> => {
     if (Platform.OS === "ios") {
         try {
-            const { status } = await TrackingTransparency.getTrackingPermissionsAsync();
+            // Request tracking permission first
+            const { status } = await TrackingTransparency.requestTrackingPermissionsAsync();
             if (status === "granted") {
-                // This method doesn't exist in the current Expo API
-                // We'll use getIosIdForVendorAsync instead or return null
-                return await Application.getIosIdForVendorAsync();
+                // Use the correct getAdvertisingId method from TrackingTransparency
+                return await TrackingTransparency.getAdvertisingId();
             }
             return null;
         } catch (error) {
             console.error("Error getting advertising identifier:", error);
+            return null;
+        }
+    }
+    return null;
+};
+
+// Function to get iOS Identifier for Vendor
+const getIosIdentifierForVendor = async (): Promise<string | null> => {
+    if (Platform.OS === "ios") {
+        try {
+            return await Application.getIosIdForVendorAsync();
+        } catch (error) {
+            console.error("Error getting iOS identifier for vendor:", error);
             return null;
         }
     }
