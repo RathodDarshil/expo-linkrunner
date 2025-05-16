@@ -105,7 +105,19 @@ export default function App() {
 
 ### Signup
 
-Call this function once after the user completes your app's onboarding:
+Call this function once after the user completes your app's onboarding.
+
+It is strongly recommended to use the platform’s identify function to set a persistent user_id once it becomes available (typically after signup or login).
+
+- [Mixpanel - ID Management & User Identification](https://docs.mixpanel.com/docs/tracking-methods/id-management/identifying-users-simplified)
+- [PostHog - How User Identification Works](https://posthog.com/docs/product-analytics/identify#how-identify-works)
+- [Amplitude - Identify Users Documentation](https://amplitude.com/docs/get-started/identify-users)
+
+If the platform's identifier function is not called, you must provide a user identifier for Mixpanel, PostHog, and Amplitude integration.
+
+- mixpanel_distinct_id for Mixpanel
+- posthog_distinct_id for PostHog
+- amplitude_device_id for Amplitude
 
 ```js
 import linkrunner from "expo-linkrunner";
@@ -117,6 +129,9 @@ const onSignup = async () => {
             name: "John Doe", // optional
             phone: "9583849238", // optional
             email: "support@linkrunner.io", //optional
+            mixpanel_distinct_id: "mixpanel_distinct_id", // optional
+            amplitude_device_id: "amplitude_device_id", // optional
+            posthog_distinct_id: "posthog_distinct_id", // optional
         },
         data: {}, // Any other data you might need
     });
