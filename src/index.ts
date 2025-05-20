@@ -5,12 +5,12 @@ import { device_data, getDeeplinkURL, getLinkRunnerInstallInstanceId, setDeeplin
 import type { CampaignData, LRIPLocationData, UserData } from "./types";
 
 // Get package version
-const package_version = "1.3.1";
+const package_version = "1.3.2";
 const app_version = Application.nativeApplicationVersion || "";
 
 const baseUrl = "https://api.linkrunner.io";
 
-const initApiCall = async (token: string, source: "GENERAL" | "ADS", link?: string) => {
+const initApiCall = async (token: string, source: "GENERAL" | "ADS", link?: string, debug?: boolean) => {
     try {
         const fetch_result = await fetch(baseUrl + "/api/client/init", {
             method: "POST",
@@ -27,6 +27,7 @@ const initApiCall = async (token: string, source: "GENERAL" | "ADS", link?: stri
                 source,
                 link,
                 install_instance_id: await getLinkRunnerInstallInstanceId(),
+                debug,
             }),
         });
 
@@ -56,7 +57,7 @@ class Linkrunner {
         this.token = null;
     }
 
-    async init(token: string): Promise<void | LRInitResponse> {
+    async init(token: string, options?: { debug: boolean }): Promise<void | LRInitResponse> {
         if (!token) {
             console.error("Linkrunner needs your project token to initialize!");
             return;
@@ -64,7 +65,7 @@ class Linkrunner {
 
         this.token = token;
 
-        return await initApiCall(token, "GENERAL");
+        return await initApiCall(token, "GENERAL", undefined, options?.debug);
     }
 
     async signup({
