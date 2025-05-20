@@ -5,7 +5,7 @@ import { device_data, getDeeplinkURL, getLinkRunnerInstallInstanceId, setDeeplin
 import type { CampaignData, LRIPLocationData, UserData } from "./types";
 
 // Get package version
-const package_version = "1.3.2";
+const package_version = "1.3.3";
 const app_version = Application.nativeApplicationVersion || "";
 
 const baseUrl = "https://api.linkrunner.io";
