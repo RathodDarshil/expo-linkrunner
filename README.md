@@ -14,6 +14,7 @@ Expo Package for [linkrunner.io](https://www.linkrunner.io) - Track and analyze 
     -   [Track Event](#track-event)
     -   [Capture Payment](#capture-payment)
     -   [Remove Payment](#remove-payment)
+    -   [Set Additional Data](#set-additional-data)
 -   [Function Placement Guide](#function-placement-guide)
 -   [Support](#facing-issues-during-integration)
 -   [License](#license)
@@ -218,6 +219,25 @@ const removePayment = async () => {
 };
 ```
 
+### Set Additional Data
+
+Send integration data to the Linkrunner server:
+
+```js
+import linkrunner from "expo-linkrunner";
+
+const sendIntegrationData = async () => {
+    await linkrunner.setAdditionalData({
+        clevertapId: "user_clevertap_id", // CleverTap identifier
+    });
+};
+```
+
+#### Parameters for `linkrunner.setAdditionalData`
+
+-   `integrationData`: object (required) - Object containing integration data
+    -   `clevertapId`: string (optional) - CleverTap identifier for the user
+
 ## Function Placement Guide
 
 Here's where to place each function in your application:
@@ -231,6 +251,7 @@ Here's where to place each function in your application:
 | `linkrunner.trackEvent`      | Throughout your app                                                     | When specific user actions or events occur               |
 | `linkrunner.capturePayment`  | In your payment processing flow                                         | When a user makes a payment                              |
 | `linkrunner.removePayment`   | In your payment cancellation flow                                       | When a payment needs to be removed                       |
+| `linkrunner.setAdditionalData` | After initializing analytics SDKs                                      | When you want to associate analytics IDs with the user   |
 
 ## Facing issues during integration?
 
