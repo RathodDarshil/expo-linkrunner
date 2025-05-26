@@ -251,7 +251,7 @@ Here's where to place each function in your application:
 | `linkrunner.trackEvent`      | Throughout your app                                                     | When specific user actions or events occur               |
 | `linkrunner.capturePayment`  | In your payment processing flow                                         | When a user makes a payment                              |
 | `linkrunner.removePayment`   | In your payment cancellation flow                                       | When a payment needs to be removed                       |
-| `linkrunner.setAdditionalData` | After initializing analytics SDKs                                      | When you want to associate analytics IDs with the user   |
+| `linkrunner.setAdditionalData` | After initializing the SDK                                      | When you want to associate analytics IDs with the user   |
 
 ## Facing issues during integration?
 
