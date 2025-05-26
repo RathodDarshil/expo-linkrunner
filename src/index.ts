@@ -5,7 +5,7 @@ import { device_data, getDeeplinkURL, getLinkRunnerInstallInstanceId, setDeeplin
 import type { CampaignData, IntegrationData, LRIPLocationData, UserData } from "./types";
 
 // Get package version
-const package_version = "1.3.1";
+const package_version = "1.4.0";
 const app_version = Application.nativeApplicationVersion || "";
 
 const baseUrl = "https://api.linkrunner.io";
@@ -393,10 +393,8 @@ class Linkrunner {
         }
 
         try {
-            // Convert IntegrationData to integration_info object
             const integration_info: Record<string, any> = {};
             
-            // Map the properties from IntegrationData to the expected API format
             if (integrationData.clevertapId) {
                 integration_info.clevertap_id = integrationData.clevertapId;
             }
