@@ -31,6 +31,10 @@ export interface CampaignData {
     asset_name: string | null;
 }
 
+export interface IntegrationData {
+    clevertapId?: string;
+}
+
 export type Response = {
     ip_location_data: LRIPLocationData;
     deeplink: string;

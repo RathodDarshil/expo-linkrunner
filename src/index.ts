@@ -2,7 +2,7 @@ import { Platform } from "react-native";
 import * as Linking from "expo-linking";
 import * as Application from "expo-application";
 import { device_data, getDeeplinkURL, getLinkRunnerInstallInstanceId, setDeeplinkURL } from "./helper";
-import type { CampaignData, LRIPLocationData, UserData } from "./types";
+import type { CampaignData, IntegrationData, LRIPLocationData, UserData } from "./types";
 
 // Get package version
 const package_version = "1.3.1";
@@ -373,6 +373,64 @@ class Linkrunner {
             }
         } catch (error) {
             console.error("Linkrunner: Error processing Google Analytics:", error);
+        }
+    }
+
+    /**
+     * Sends integration data to the server
+     * @param integrationData Object containing integration data values
+     * @returns Promise with API response data or void if failed
+     */
+    async setAdditionalData(integrationData: IntegrationData): Promise<void | any> {
+        if (!this.token) {
+            console.error("Linkrunner: Setting integration data failed, token not initialized");
+            return;
+        }
+
+        if (!integrationData || Object.keys(integrationData).length === 0) {
+            console.error("Linkrunner: Integration data is required");
+            return;
+        }
+
+        try {
+            // Convert IntegrationData to integration_info object
+            const integration_info: Record<string, any> = {};
+            
+            // Map the properties from IntegrationData to the expected API format
+            if (integrationData.clevertapId) {
+                integration_info.clevertap_id = integrationData.clevertapId;
+            }
+
+            const response = await fetch(baseUrl + "/api/client/integrations", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    token: this.token,
+                    install_instance_id: await getLinkRunnerInstallInstanceId(),
+                    integration_info: integration_info,
+                    platform: Platform.OS
+                }),
+            });
+
+            const result = await response.json();
+
+            if (result?.status !== 200 && result?.status !== 201) {
+                console.error("Linkrunner: Setting integration data failed");
+                console.error("Linkrunner: ", result?.msg);
+                return;
+            }
+
+            if (__DEV__) {
+                console.log("Linkrunner: Integration data set successfully", integration_info);
+            }
+
+            return result?.data;
+        } catch (error) {
+            console.error("Linkrunner: Setting integration data failed");
+            console.error("Linkrunner: ", error);
         }
     }
 }
