@@ -436,20 +436,4 @@ export interface LRAttributionData {
     attribution_source: string;
 }
 
-export interface LRInitResponse {
-    ip_location_data: LRIPLocationData;
-    deeplink: string;
-    root_domain: boolean;
-    campaign_data: CampaignData;
-    attribution_source?: "ORGANIC" | "META" | "GOOGLE";
-}
-
-export type LRTriggerResponse = {
-    ip_location_data: LRIPLocationData;
-    deeplink: string;
-    root_domain: boolean;
-    trigger?: boolean;
-    campaign_data: CampaignData;
-};
-
 export default linkrunner;
