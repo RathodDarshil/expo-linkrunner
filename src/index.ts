@@ -2,7 +2,7 @@ import { Platform } from "react-native";
 import * as Linking from "expo-linking";
 import * as Application from "expo-application";
 import { device_data, getDeeplinkURL, getLinkRunnerInstallInstanceId, setDeeplinkURL } from "./helper";
-import type { CampaignData, LRIPLocationData, UserData } from "./types";
+import type { CampaignData, UserData } from "./types";
 
 // Get package version
 const package_version = "1.4.0";
@@ -41,9 +41,6 @@ const initApiCall = async (token: string, source: "GENERAL" | "ADS", link?: stri
             console.log("Linkrunner initialised successfully 🔥");
             console.log("init response > ", result);
         }
-
-        // No longer expecting data in the response
-        return {};
     } catch (error) {
         console.error("Error initializing linkrunner", error);
     }
@@ -56,7 +53,7 @@ class Linkrunner {
         this.token = null;
     }
 
-    async init(token: string, options?: { debug: boolean }): Promise<Record<string, never> | void> {
+    async init(token: string, options?: { debug: boolean }): Promise<void> {
         if (!token) {
             console.error("Linkrunner needs your project token to initialize!");
             return;
@@ -64,7 +61,7 @@ class Linkrunner {
 
         this.token = token;
 
-        return await initApiCall(token, "GENERAL", undefined, options?.debug);
+        await initApiCall(token, "GENERAL", undefined, options?.debug);
     }
 
     async signup({
@@ -73,7 +70,7 @@ class Linkrunner {
     }: {
         data?: { [key: string]: any };
         user_data: UserData;
-    }): Promise<Record<string, never> | void> {
+    }): Promise<void> {
         if (!this.token) {
             console.error("Linkrunner: Signup failed, token not initialized");
             return;
@@ -109,8 +106,7 @@ class Linkrunner {
                 console.log("Linkrunner: Signup called 🔥");
             }
 
-            // Return empty object as data
-            return {};
+            return;
         } catch (err: any) {
             console.error("Linkrunner: Signup failed");
             console.error("Linkrunner: ", err.message);

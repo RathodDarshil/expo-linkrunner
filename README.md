@@ -53,6 +53,8 @@ For iOS, to access the advertising identifier (IDFA), add this to your `app.json
 
 Initialize linkrunner with your project token in your `App.js`/`App.tsx`:
 
+Note: The init function does not return any data. To get the attribution data and the deeplink use the `getAttributionData` function.
+
 ```js
 import linkrunner from "expo-linkrunner";
 import { useEffect } from "react";
@@ -63,9 +65,8 @@ export default function App() {
     }, []);
 
     const initLinkrunner = async () => {
-        const initData = await linkrunner.init("YOUR_PROJECT_TOKEN");
+        await linkrunner.init("YOUR_PROJECT_TOKEN");
 
-        // The response returns a status and a message
         // To get attribution data, use the getAttributionData function
         const attributionData = await linkrunner.getAttributionData();
         console.log(attributionData);
@@ -77,7 +78,7 @@ export default function App() {
 
 ### Get Attribution Data
 
-To retrieve attribution data related to an install, use the `getAttributionData` function. This function returns information about the installation source, campaign data, and deeplink information.
+To retrieve attribution data and deeplink related to an install, use the `getAttributionData` function. This function returns information about the installation source, campaign data, and deeplink information.
 
 ```js
 const getAttributionInfo = async () => {
@@ -114,7 +115,7 @@ Call this function once after the user completes your app's onboarding:
 import linkrunner from "expo-linkrunner";
 
 const onSignup = async () => {
-    const signup = await linkrunner.signup({
+    await linkrunner.signup({
         user_data: {
             id: "1",
             name: "John Doe", // optional
