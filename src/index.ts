@@ -2,10 +2,10 @@ import { Platform } from "react-native";
 import * as Linking from "expo-linking";
 import * as Application from "expo-application";
 import { device_data, getDeeplinkURL, getLinkRunnerInstallInstanceId, setDeeplinkURL } from "./helper";
-import type { CampaignData, LRIPLocationData, UserData } from "./types";
+import type { CampaignData, UserData } from "./types";
 
 // Get package version
-const package_version = "1.3.3";
+const package_version = "2.0.0";
 const app_version = Application.nativeApplicationVersion || "";
 
 const baseUrl = "https://api.linkrunner.io";
@@ -41,10 +41,6 @@ const initApiCall = async (token: string, source: "GENERAL" | "ADS", link?: stri
             console.log("Linkrunner initialised successfully 🔥");
             console.log("init response > ", result);
         }
-
-        if (!!result?.data?.deeplink) setDeeplinkURL(result?.data?.deeplink);
-
-        return result?.data;
     } catch (error) {
         console.error("Error initializing linkrunner", error);
     }
@@ -57,7 +53,7 @@ class Linkrunner {
         this.token = null;
     }
 
-    async init(token: string, options?: { debug: boolean }): Promise<void | LRInitResponse> {
+    async init(token: string, options?: { debug: boolean }): Promise<void> {
         if (!token) {
             console.error("Linkrunner needs your project token to initialize!");
             return;
@@ -65,7 +61,7 @@ class Linkrunner {
 
         this.token = token;
 
-        return await initApiCall(token, "GENERAL", undefined, options?.debug);
+        await initApiCall(token, "GENERAL", undefined, options?.debug);
     }
 
     async signup({
@@ -74,7 +70,7 @@ class Linkrunner {
     }: {
         data?: { [key: string]: any };
         user_data: UserData;
-    }): Promise<void | LRTriggerResponse> {
+    }): Promise<void> {
         if (!this.token) {
             console.error("Linkrunner: Signup failed, token not initialized");
             return;
@@ -110,7 +106,7 @@ class Linkrunner {
                 console.log("Linkrunner: Signup called 🔥");
             }
 
-            return result.data;
+            return;
         } catch (err: any) {
             console.error("Linkrunner: Signup failed");
             console.error("Linkrunner: ", err.message);
@@ -181,6 +177,56 @@ class Linkrunner {
             return result.data;
         } catch (err: any) {
             console.error("Linkrunner: Set user data failed");
+            console.error("Linkrunner: ", err?.message);
+        }
+    }
+
+    async getAttributionData(): Promise<{
+        deeplink: string;
+        campaign_data: CampaignData;
+        attribution_source: string;
+    } | void> {
+        if (!this.token) {
+            console.error("Linkrunner: Get attribution data failed, token not initialized");
+            return;
+        }
+
+        try {
+            const response = await fetch(baseUrl + "/api/client/attribution-data", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    token: this.token,
+                    package_version,
+                    app_version,
+                    device_data: await device_data(),
+                    platform: "EXPO",
+                    install_instance_id: await getLinkRunnerInstallInstanceId(),
+                }),
+            });
+
+            const result = await response.json();
+
+            if (result?.status !== 200 && result?.status !== 201) {
+                console.error("Linkrunner: Failed to get attribution data");
+                console.error("Linkrunner: ", result?.msg);
+                return;
+            }
+
+            if (__DEV__) {
+                console.log("Linkrunner: Attribution data retrieved successfully 🔥");
+            }
+
+            if(result?.data?.deeplink){
+                setDeeplinkURL(result?.data?.deeplink);
+            }
+
+            return result.data;
+        } catch (err: any) {
+            console.error("Linkrunner: Failed to get attribution data");
             console.error("Linkrunner: ", err?.message);
         }
     }
@@ -380,20 +426,10 @@ class Linkrunner {
 
 const linkrunner = new Linkrunner();
 
-export type LRInitResponse = {
-    ip_location_data: LRIPLocationData;
+export interface LRAttributionData {
     deeplink: string;
-    root_domain: boolean;
     campaign_data: CampaignData;
-    attribution_source?: "ORGANIC" | "META" | "GOOGLE";
-};
-
-export type LRTriggerResponse = {
-    ip_location_data: LRIPLocationData;
-    deeplink: string;
-    root_domain: boolean;
-    trigger?: boolean;
-    campaign_data: CampaignData;
-};
+    attribution_source: string;
+}
 
 export default linkrunner;

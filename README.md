@@ -53,6 +53,8 @@ For iOS, to access the advertising identifier (IDFA), add this to your `app.json
 
 Initialize linkrunner with your project token in your `App.js`/`App.tsx`:
 
+Note: The init function does not return any data. To get the attribution data and the deeplink use the `getAttributionData` function.
+
 ```js
 import linkrunner from "expo-linkrunner";
 import { useEffect } from "react";
@@ -63,43 +65,45 @@ export default function App() {
     }, []);
 
     const initLinkrunner = async () => {
-        const initData = await linkrunner.init("YOUR_PROJECT_TOKEN");
+        await linkrunner.init("YOUR_PROJECT_TOKEN");
 
-        // The response contains IP location data, deeplink info, and campaign data
-        console.log(initData);
+        // To get attribution data, use the getAttributionData function
+        const attributionData = await linkrunner.getAttributionData();
+        console.log(attributionData);
     };
 
     // Rest of your app
 }
 ```
 
-#### Response type for `linkrunner.init`
+### Get Attribution Data
+
+To retrieve attribution data and deeplink related to an install, use the `getAttributionData` function. This function returns information about the installation source, campaign data, and deeplink information.
+
+```js
+const getAttributionInfo = async () => {
+    const attributionData = await linkrunner.getAttributionData();
+    console.log(attributionData);
+};
+```
+
+#### Response type for `linkrunner.getAttributionData`
 
 ```typescript
 {
-    ip_location_data: {
-        ip: string;
-        city: string;
-        countryLong: string;
-        countryShort: string;
-        latitude: number;
-        longitude: number;
-        region: string;
-        timeZone: string;
-        zipCode: string;
-    }
-    deeplink: string;
-    root_domain: boolean;
-    campaign_data: {
-        id: string;
-        name: string;
+    deeplink: string;                // The deeplink that led to the install
+    campaign_data: {                  // Information about the campaign
+        id: string;                   // Campaign ID
+        name: string;                 // Campaign name
         type: "ORGANIC" | "INORGANIC";
-        ad_network: "META" | "GOOGLE" | null;
-        group_name: string | null;
-        asset_group_name: string | null;
-        asset_name: string | null;
-    }
-    attribution_source: "ORGANIC" | "META" | "GOOGLE";
+        ad_network: string | null;
+        group_name: string | null;    // Ad group name
+        asset_group_name: string | null; // Asset group name
+        asset_name: string | null;     // Asset name
+        installed_at: string;         // ISO timestamp of installation
+        store_click_at: string;       // ISO timestamp of store click
+    };
+    attribution_source: "ORGANIC" | "META" | "GOOGLE" | "INORGANIC";
 }
 ```
 
@@ -111,7 +115,7 @@ Call this function once after the user completes your app's onboarding:
 import linkrunner from "expo-linkrunner";
 
 const onSignup = async () => {
-    const signup = await linkrunner.signup({
+    await linkrunner.signup({
         user_data: {
             id: "1",
             name: "John Doe", // optional
@@ -231,6 +235,7 @@ Here's where to place each function in your application:
 | `linkrunner.trackEvent`      | Throughout your app                                                     | When specific user actions or events occur               |
 | `linkrunner.capturePayment`  | In your payment processing flow                                         | When a user makes a payment                              |
 | `linkrunner.removePayment`   | In your payment cancellation flow                                       | When a payment needs to be removed                       |
+| `linkrunner.getAttributionData` | In your app's attribution handling logic                | When you need to access attribution data (campaign, deeplink, install info) |
 
 ## Facing issues during integration?
 
