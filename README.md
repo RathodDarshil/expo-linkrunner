@@ -4,19 +4,19 @@ Expo Package for [linkrunner.io](https://www.linkrunner.io) - Track and analyze 
 
 ## Table of Contents
 
--   [Installation](#installation)
--   [Configuration](#configuration)
--   [Usage](#usage)
-    -   [Initialisation](#initialisation)
-    -   [Signup](#signup)
-    -   [Set User Data](#set-user-data)
-    -   [Trigger Deeplink](#trigger-deeplink-for-deferred-deep-linking)
-    -   [Track Event](#track-event)
-    -   [Capture Payment](#capture-payment)
-    -   [Remove Payment](#remove-payment)
--   [Function Placement Guide](#function-placement-guide)
--   [Support](#facing-issues-during-integration)
--   [License](#license)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+    - [Initialisation](#initialisation)
+    - [Signup](#signup)
+    - [Set User Data](#set-user-data)
+    - [Trigger Deeplink](#trigger-deeplink-for-deferred-deep-linking)
+    - [Track Event](#track-event)
+    - [Capture Payment](#capture-payment)
+    - [Remove Payment](#remove-payment)
+- [Function Placement Guide](#function-placement-guide)
+- [Support](#facing-issues-during-integration)
+- [License](#license)
 
 ## Installation
 
@@ -53,7 +53,7 @@ For iOS, to access the advertising identifier (IDFA), add this to your `app.json
 
 Initialize linkrunner with your project token in your `App.js`/`App.tsx`:
 
-Note: The init function does not return any data. To get the attribution data and the deeplink use the `getAttributionData` function.
+Note: The init function does not return any data. To get the attribution data and the deeplink, use the [getAttributionData](#get-attribution-data) function.
 
 ```js
 import linkrunner from "expo-linkrunner";
@@ -66,10 +66,6 @@ export default function App() {
 
     const initLinkrunner = async () => {
         await linkrunner.init("YOUR_PROJECT_TOKEN");
-
-        // To get attribution data, use the getAttributionData function
-        const attributionData = await linkrunner.getAttributionData();
-        console.log(attributionData);
     };
 
     // Rest of your app
@@ -83,26 +79,28 @@ To retrieve attribution data and deeplink related to an install, use the `getAtt
 ```js
 const getAttributionInfo = async () => {
     const attributionData = await linkrunner.getAttributionData();
-    console.log(attributionData);
 };
 ```
+
+Note: Only use this function if you need the attribution data inside your app. You can access the same data via webhooks and API calls from the [Linkrunner Dashboard](https://www.linkrunner.io/settings?s=data-apis).
 
 #### Response type for `linkrunner.getAttributionData`
 
 ```typescript
 {
-    deeplink: string;                // The deeplink that led to the install
-    campaign_data: {                  // Information about the campaign
-        id: string;                   // Campaign ID
-        name: string;                 // Campaign name
+    deeplink: string; // The deeplink that led to the install
+    campaign_data: {
+        // Information about the campaign
+        id: string; // Linkrunner Campaign ID
+        name: string; // Campaign name
         type: "ORGANIC" | "INORGANIC";
         ad_network: string | null;
-        group_name: string | null;    // Ad group name
+        group_name: string | null; // Ad group name
         asset_group_name: string | null; // Asset group name
-        asset_name: string | null;     // Asset name
-        installed_at: string;         // ISO timestamp of installation
-        store_click_at: string;       // ISO timestamp of store click
-    };
+        asset_name: string | null; // Asset name
+        installed_at: string; // ISO timestamp of installation
+        store_click_at: string; // ISO timestamp of store click
+    }
     attribution_source: "ORGANIC" | "META" | "GOOGLE" | "INORGANIC";
 }
 ```
@@ -191,23 +189,23 @@ const capturePayment = async () => {
 
 #### Parameters for `linkrunner.capturePayment`
 
--   `amount`: number (required) - The payment amount
--   `userId`: string (required) - Identifier for the user making the payment
--   `paymentId`: string (optional) - Unique identifier for the payment
--   `type`: string (optional) - Type of payment. Available options:
-    -   `FIRST_PAYMENT` - First payment made by the user
-    -   `WALLET_TOPUP` - Adding funds to a wallet
-    -   `FUNDS_WITHDRAWAL` - Withdrawing funds
-    -   `SUBSCRIPTION_CREATED` - New subscription created
-    -   `SUBSCRIPTION_RENEWED` - Subscription renewal
-    -   `ONE_TIME` - One-time payment
-    -   `RECURRING` - Recurring payment
-    -   `DEFAULT` - Default type (used if not specified)
--   `status`: string (optional) - Status of the payment. Available options:
-    -   `PAYMENT_INITIATED` - Payment has been initiated
-    -   `PAYMENT_COMPLETED` - Payment completed successfully (default if not specified)
-    -   `PAYMENT_FAILED` - Payment attempt failed
-    -   `PAYMENT_CANCELLED` - Payment was cancelled
+- `amount`: number (required) - The payment amount
+- `userId`: string (required) - Identifier for the user making the payment
+- `paymentId`: string (optional) - Unique identifier for the payment
+- `type`: string (optional) - Type of payment. Available options:
+    - `FIRST_PAYMENT` - First payment made by the user
+    - `WALLET_TOPUP` - Adding funds to a wallet
+    - `FUNDS_WITHDRAWAL` - Withdrawing funds
+    - `SUBSCRIPTION_CREATED` - New subscription created
+    - `SUBSCRIPTION_RENEWED` - Subscription renewal
+    - `ONE_TIME` - One-time payment
+    - `RECURRING` - Recurring payment
+    - `DEFAULT` - Default type (used if not specified)
+- `status`: string (optional) - Status of the payment. Available options:
+    - `PAYMENT_INITIATED` - Payment has been initiated
+    - `PAYMENT_COMPLETED` - Payment completed successfully (default if not specified)
+    - `PAYMENT_FAILED` - Payment attempt failed
+    - `PAYMENT_CANCELLED` - Payment was cancelled
 
 ### Remove Payment
 
@@ -226,16 +224,16 @@ const removePayment = async () => {
 
 Here's where to place each function in your application:
 
-| Function                     | Where to Place                                                          | When to Call                                             |
-| ---------------------------- | ----------------------------------------------------------------------- | -------------------------------------------------------- |
-| `linkrunner.init`            | In your `App.tsx` within a `useEffect` hook with empty dependency array | Once when the app starts                                 |
-| `linkrunner.signup`          | In your onboarding flow                                                 | Once after user completes the onboarding process         |
-| `linkrunner.setUserData`     | In your authentication logic                                            | Every time the app is opened and the user is logged in   |
-| `linkrunner.triggerDeeplink` | After navigation initialization                                         | Once after your navigation is ready to handle deep links |
-| `linkrunner.trackEvent`      | Throughout your app                                                     | When specific user actions or events occur               |
-| `linkrunner.capturePayment`  | In your payment processing flow                                         | When a user makes a payment                              |
-| `linkrunner.removePayment`   | In your payment cancellation flow                                       | When a payment needs to be removed                       |
-| `linkrunner.getAttributionData` | In your app's attribution handling logic                | When you need to access attribution data (campaign, deeplink, install info) |
+| Function                        | Where to Place                                                          | When to Call                                                                |
+| ------------------------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `linkrunner.init`               | In your `App.tsx` within a `useEffect` hook with empty dependency array | Once when the app starts                                                    |
+| `linkrunner.signup`             | In your onboarding flow                                                 | Once after user completes the onboarding process                            |
+| `linkrunner.setUserData`        | In your authentication logic                                            | Every time the app is opened and the user is logged in                      |
+| `linkrunner.triggerDeeplink`    | After navigation initialization                                         | Once after your navigation is ready to handle deep links                    |
+| `linkrunner.trackEvent`         | Throughout your app                                                     | When specific user actions or events occur                                  |
+| `linkrunner.capturePayment`     | In your payment processing flow                                         | When a user makes a payment                                                 |
+| `linkrunner.removePayment`      | In your payment cancellation flow                                       | When a payment needs to be removed                                          |
+| `linkrunner.getAttributionData` | In your app's attribution handling logic                                | When you need to access attribution data (campaign, deeplink, install info) |
 
 ## Facing issues during integration?
 
