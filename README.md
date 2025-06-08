@@ -26,6 +26,12 @@ Install the package and its required dependencies:
 npx expo install expo-linkrunner
 ```
 
+You will also need to install the following dependencies required by expo-linkrunner:
+
+```sh
+npx expo install @react-native-async-storage/async-storage expo-device expo-network expo-tracking-transparency
+```
+
 ## Configuration
 
 ### iOS Configuration

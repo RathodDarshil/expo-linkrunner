@@ -5,7 +5,7 @@ import { device_data, getDeeplinkURL, getLinkRunnerInstallInstanceId, setDeeplin
 import type { CampaignData, UserData } from "./types";
 
 // Get package version
-const package_version = "2.0.0";
+const package_version = "2.0.2";
 const app_version = Application.nativeApplicationVersion || "";
 
 const baseUrl = "https://api.linkrunner.io";
@@ -64,13 +64,7 @@ class Linkrunner {
         await initApiCall(token, "GENERAL", undefined, options?.debug);
     }
 
-    async signup({
-        data,
-        user_data,
-    }: {
-        data?: { [key: string]: any };
-        user_data: UserData;
-    }): Promise<void> {
+    async signup({ data, user_data }: { data?: { [key: string]: any }; user_data: UserData }): Promise<void> {
         if (!this.token) {
             console.error("Linkrunner: Signup failed, token not initialized");
             return;
@@ -220,7 +214,7 @@ class Linkrunner {
                 console.log("Linkrunner: Attribution data retrieved successfully 🔥");
             }
 
-            if(result?.data?.deeplink){
+            if (result?.data?.deeplink) {
                 setDeeplinkURL(result?.data?.deeplink);
             }
 
