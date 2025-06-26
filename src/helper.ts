@@ -63,7 +63,7 @@ const device_data = async (): Promise<Record<string, any>> => {
 
             // Advertising IDs with privacy controls
             idfa: Platform.OS === "ios" ? await getAdvertisingIdentifier() : null,
-            gaid: Platform.OS === "android" ? await safeGet(Application.getAndroidId) : null,
+            gaid: Platform.OS === "android" ? await getAdvertisingIdentifier() : null,
 
             // For IDFV, use dedicated function
             idfv: Platform.OS === "ios" ? await getIosIdentifierForVendor() : null,
@@ -103,6 +103,13 @@ const getAdvertisingIdentifier = async (): Promise<string | null> => {
             return null;
         } catch (error) {
             console.error("Error getting advertising identifier:", error);
+            return null;
+        }
+    } else if (Platform.OS === "android") {
+        try {
+            return await TrackingTransparency.getAdvertisingId();
+        } catch (error) {
+            console.error("Error getting Google Advertising ID:", error);
             return null;
         }
     }
