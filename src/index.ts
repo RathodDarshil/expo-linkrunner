@@ -1,11 +1,10 @@
 import { Platform } from "react-native";
-import * as Linking from "expo-linking";
 import * as Application from "expo-application";
-import { device_data, getDeeplinkURL, getLinkRunnerInstallInstanceId, setDeeplinkURL } from "./helper";
+import { device_data, getLinkRunnerInstallInstanceId } from "./helper";
 import type { CampaignData, UserData } from "./types";
 
 // Get package version
-const package_version = "2.0.3";
+const package_version = "2.1.0";
 const app_version = Application.nativeApplicationVersion || "";
 
 const baseUrl = "https://api.linkrunner.io";
@@ -107,38 +106,6 @@ class Linkrunner {
         }
     }
 
-    async triggerDeeplink() {
-        const deeplink_url = await getDeeplinkURL();
-
-        if (!deeplink_url) {
-            console.error("Linkrunner: Deeplink URL not found");
-            return;
-        }
-
-        Linking.openURL(deeplink_url).then(() => {
-            fetch(baseUrl + "/api/client/deeplink-triggered", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    token: this.token,
-                }),
-            })
-                .then(() => {
-                    if (__DEV__) {
-                        console.log("Linkrunner: Deeplink triggered successfully", deeplink_url);
-                    }
-                })
-                .catch(() => {
-                    if (__DEV__) {
-                        console.error("Linkrunner: Deeplink triggering failed", deeplink_url);
-                    }
-                });
-        });
-    }
-
     async setUserData(user_data: UserData) {
         if (!this.token) {
             console.error("Linkrunner: Set user data failed, token not initialized");
@@ -212,10 +179,6 @@ class Linkrunner {
 
             if (__DEV__) {
                 console.log("Linkrunner: Attribution data retrieved successfully 🔥");
-            }
-
-            if (result?.data?.deeplink) {
-                setDeeplinkURL(result?.data?.deeplink);
             }
 
             return result.data;

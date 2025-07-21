@@ -1,6 +1,6 @@
 {
     "name": "expo-linkrunner",
-    "version": "2.0.3",
+    "version": "2.1.0",
     "description": "Expo Package for linkrunner.io",
     "main": "build/index.js",
     "types": "build/index.d.ts",
@@ -32,10 +32,8 @@
         "@react-native-async-storage/async-storage": "^1.21.0",
         "expo-application": "~5.8.0",
         "expo-device": "~6.0.0",
-        "expo-linking": "~6.2.0",
         "expo-network": "~5.8.0",
-        "expo-tracking-transparency": "^5.1.1",
-        "expo-web-browser": "~12.8.0"
+        "expo-tracking-transparency": "^5.1.1"
     },
     "devDependencies": {
         "expo": "^52.0.37",

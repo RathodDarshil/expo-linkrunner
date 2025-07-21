@@ -8,9 +8,9 @@ Expo Package for [linkrunner.io](https://www.linkrunner.io) - Track and analyze 
 - [Configuration](#configuration)
 - [Usage](#usage)
     - [Initialisation](#initialisation)
+    - [Get Attribution Data](#get-attribution-data)
     - [Signup](#signup)
     - [Set User Data](#set-user-data)
-    - [Trigger Deeplink](#trigger-deeplink-for-deferred-deep-linking)
     - [Track Event](#track-event)
     - [Capture Payment](#capture-payment)
     - [Remove Payment](#remove-payment)
@@ -29,7 +29,7 @@ npx expo install expo-linkrunner
 You will also need to install the following dependencies required by expo-linkrunner:
 
 ```sh
-npx expo install @react-native-async-storage/async-storage expo-device expo-network expo-tracking-transparency
+npx expo install @react-native-async-storage/async-storage expo-application expo-device expo-network expo-tracking-transparency
 ```
 
 ## Configuration
@@ -150,20 +150,6 @@ const setUserData = async () => {
 };
 ```
 
-### Trigger Deeplink (For Deferred Deep Linking)
-
-This function triggers the original deeplink that led to app installation:
-
-```js
-import linkrunner from "expo-linkrunner";
-
-const onTriggerDeeplink = async () => {
-    await linkrunner.triggerDeeplink();
-};
-```
-
-Note: For this to work properly, make sure you have added verification objects on the [Linkrunner Dashboard](https://www.linkrunner.io/settings?sort_by=activity-1&s=store-verification).
-
 ### Track Event
 
 Track custom events with optional additional data:
@@ -233,13 +219,12 @@ Here's where to place each function in your application:
 | Function                        | Where to Place                                                          | When to Call                                                                |
 | ------------------------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | `linkrunner.init`               | In your `App.tsx` within a `useEffect` hook with empty dependency array | Once when the app starts                                                    |
+| `linkrunner.getAttributionData` | In your app's attribution handling logic                                | When you need to access attribution data (campaign, deeplink, install info) |
 | `linkrunner.signup`             | In your onboarding flow                                                 | Once after user completes the onboarding process                            |
 | `linkrunner.setUserData`        | In your authentication logic                                            | Every time the app is opened and the user is logged in                      |
-| `linkrunner.triggerDeeplink`    | After navigation initialization                                         | Once after your navigation is ready to handle deep links                    |
 | `linkrunner.trackEvent`         | Throughout your app                                                     | When specific user actions or events occur                                  |
 | `linkrunner.capturePayment`     | In your payment processing flow                                         | When a user makes a payment                                                 |
 | `linkrunner.removePayment`      | In your payment cancellation flow                                       | When a payment needs to be removed                                          |
-| `linkrunner.getAttributionData` | In your app's attribution handling logic                                | When you need to access attribution data (campaign, deeplink, install info) |
 
 ## Facing issues during integration?
 

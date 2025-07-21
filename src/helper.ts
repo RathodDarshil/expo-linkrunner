@@ -7,7 +7,6 @@ import { Platform } from "react-native";
 
 // Constants for storage
 const STORAGE_KEY = "linkrunner_install_instance_id";
-const DEEPLINK_URL_STORAGE_KEY = "linkrunner_deeplink_url";
 const ID_LENGTH = 20;
 
 // Function to get device data (replacing device_data from original)
@@ -156,22 +155,4 @@ function generateRandomString(length: number): string {
         .join("");
 }
 
-// Functions for deeplink URL storage
-async function setDeeplinkURL(deeplink_url: string) {
-    try {
-        await AsyncStorage.setItem(DEEPLINK_URL_STORAGE_KEY, deeplink_url);
-    } catch (error) {
-        console.error("Error setting deeplink URL:", error);
-    }
-}
-
-async function getDeeplinkURL(): Promise<string | null> {
-    try {
-        return await AsyncStorage.getItem(DEEPLINK_URL_STORAGE_KEY);
-    } catch (error) {
-        console.error("Error getting deeplink URL:", error);
-        return null;
-    }
-}
-
-export { device_data, getDeeplinkURL, getLinkRunnerInstallInstanceId, setDeeplinkURL };
+export { device_data, getLinkRunnerInstallInstanceId };
