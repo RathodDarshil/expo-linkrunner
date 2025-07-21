@@ -4,6 +4,12 @@
     "description": "Expo Package for linkrunner.io",
     "main": "build/index.js",
     "types": "build/index.d.ts",
+    "expo": {
+        "module": {
+            "ios": false,
+            "android": false
+        }
+    },
     "scripts": {
         "build": "expo-module build",
         "clean": "expo-module clean",
