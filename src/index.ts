@@ -4,7 +4,7 @@ import { device_data, getLinkRunnerInstallInstanceId } from "./helper";
 import type { CampaignData, UserData } from "./types";
 
 // Get package version
-const package_version = "2.1.0";
+const package_version = "2.1.1";
 const app_version = Application.nativeApplicationVersion || "";
 
 const baseUrl = "https://api.linkrunner.io";
