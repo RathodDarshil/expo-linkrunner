@@ -12,13 +12,11 @@
     },
     "plugin": "build/module.js",
     "scripts": {
-        "build": "expo-module build",
-        "clean": "expo-module clean",
-        "lint": "expo-module lint",
-        "test": "expo-module test",
-        "_prepare": "expo-module prepare",
-        "prepublishOnly": "expo-module prepublishOnly",
-        "expo-module": "expo-module"
+        "build": "tsc",
+        "clean": "rm -rf build",
+        "lint": "eslint src --ext .ts,.tsx",
+        "test": "jest",
+        "prepublishOnly": "npm run build"
     },
     "keywords": [
         "expo",
@@ -42,7 +40,6 @@
     },
     "devDependencies": {
         "expo": "^52.0.37",
-        "expo-module-scripts": "^4.0.4",
         "typescript": "^5.7.3"
     },
     "peerDependencies": {
