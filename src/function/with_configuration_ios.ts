@@ -17,7 +17,6 @@ const withConfiguration_iOS: ConfigPlugin<LinkrunnerConfiguration> = (
                 "This identifier will be used to deliver personalized ads to you."
         }
 
-        console.log('ExpoLinkrunner: iOS Info.plist configured successfully')
         return expoConfig
     })
 

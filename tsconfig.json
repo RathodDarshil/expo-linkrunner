@@ -2,8 +2,8 @@
     "compilerOptions": {
         "rootDir": "src",
         "outDir": "build",
-        "target": "esnext",
-        "module": "esnext",
+        "target": "es2017",
+        "module": "commonjs",
         "lib": ["esnext"],
         "moduleResolution": "node",
         "jsx": "react-native",

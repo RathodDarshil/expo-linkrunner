@@ -9,7 +9,6 @@ const withConfiguration_Android: ConfigPlugin<LinkrunnerConfiguration> = (
 ): ExpoConfig => {
     // Add gradle repository for rn-linkrunner
     expoConfig = withProjectBuildGradle(expoConfig, (config) => {
-        console.log('ExpoLinkrunner: Adding Maven repository for rn-linkrunner')
         
         if(config.modResults.language == 'groovy') {
             // Check if the repository is already added
