@@ -1,6 +1,6 @@
-# Linkrunner Expo SDK
+# Linkrunner Expo Plugin
 
-An Expo package for integrating Linkrunner functionality into your Expo applications.
+An Expo plugin for integrating Linkrunner functionality into your Expo applications.
 
 ## Documentation
 
