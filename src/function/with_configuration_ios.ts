@@ -5,16 +5,21 @@ import { LinkrunnerConfiguration } from '../type/configuration'
 
 const withConfiguration_iOS: ConfigPlugin<LinkrunnerConfiguration> = (
     expoConfig: ExpoConfig,
-    _configuration: LinkrunnerConfiguration,
+    configuration?: LinkrunnerConfiguration,
 ): ExpoConfig => {
-    console.log('ExpoLinkrunner: Applying iOS configuration')
+
+    if (configuration?.debug) {
+        console.log('ExpoLinkrunner: Applying iOS configuration')
+    }
+
+    const userTrackingMessage = configuration?.userTrackingPermission || 
+        "This identifier will be used to deliver personalized ads to you."
 
     expoConfig = withInfoPlist(expoConfig, expoConfig => {
 
-        // Add default tracking description if not already present
+        // Add tracking description from configuration or default
         if (!expoConfig.modResults.NSUserTrackingUsageDescription) {
-            expoConfig.modResults.NSUserTrackingUsageDescription = 
-                "This identifier will be used to deliver personalized ads to you."
+            expoConfig.modResults.NSUserTrackingUsageDescription = userTrackingMessage
         }
 
         return expoConfig
@@ -25,7 +30,7 @@ const withConfiguration_iOS: ConfigPlugin<LinkrunnerConfiguration> = (
         [
             'expo-tracking-transparency',
             {
-                userTrackingPermission: 'This identifier will be used to deliver personalized ads and improve your app experience.'
+                userTrackingPermission: userTrackingMessage
             }
         ]
     ])

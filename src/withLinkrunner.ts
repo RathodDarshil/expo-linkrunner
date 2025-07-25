@@ -8,7 +8,10 @@ const withLinkrunner: ConfigPlugin<LinkrunnerConfiguration> = (
     expoConfig: ExpoConfig,
     configuration: LinkrunnerConfiguration,
 ): ExpoConfig => {
-    console.log('ExpoLinkrunner: Applying plugin configuration')
+    if (configuration?.debug) {
+        console.log('ExpoLinkrunner: Applying plugin configuration')
+    }
+
     expoConfig = withConfiguration_Android(expoConfig, configuration)
     expoConfig = withConfiguration_iOS(expoConfig, configuration)
     return expoConfig
