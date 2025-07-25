@@ -1,15 +1,24 @@
 {
     "name": "expo-linkrunner",
-    "version": "2.1.2",
-    "description": "Expo Package for linkrunner.io",
+    "version": "3.0.0",
+    "description": "Expo config plugin for rn-linkrunner SDK",
     "main": "build/index.js",
     "types": "build/index.d.ts",
+    "expo": {
+        "module": {
+            "ios": false,
+            "android": false
+        }
+    },
+    "plugin": "build/module.js",
     "scripts": {
-        "build": "tsc",
-        "clean": "rm -rf build",
-        "lint": "eslint src --ext .ts,.tsx",
-        "test": "jest",
-        "prepublishOnly": "npm run build"
+        "build": "expo-module build",
+        "clean": "expo-module clean",
+        "lint": "expo-module lint",
+        "test": "expo-module test",
+        "_prepare": "expo-module prepare",
+        "prepublishOnly": "expo-module prepublishOnly",
+        "expo-module": "expo-module"
     },
     "keywords": [
         "expo",
@@ -17,7 +26,8 @@
         "linkrunner",
         "attribution",
         "analytics",
-        "deeplink"
+        "deeplink",
+        "config-plugin"
     ],
     "repository": {
         "type": "git",
@@ -27,18 +37,18 @@
     "license": "MIT",
     "homepage": "https://github.com/linkrunner-labs/expo-linkrunner#readme",
     "dependencies": {
-        "@react-native-async-storage/async-storage": "^1.21.0",
-        "expo-application": "~5.8.0",
-        "expo-device": "~6.0.0",
-        "expo-network": "~5.8.0",
-        "expo-tracking-transparency": "^5.1.1"
+        "@expo/config-plugins": "^5.0.4",
+        "@expo/config-types": "^47.0.0"
     },
     "devDependencies": {
         "expo": "^52.0.37",
+        "expo-module-scripts": "^4.0.4",
         "typescript": "^5.7.3"
     },
     "peerDependencies": {
-        "expo": ">=52.0.0"
+        "@expo/config-plugins": "^7.0.0 || ^8.0.0",
+        "expo-tracking-transparency": "*",
+        "rn-linkrunner": "2.1.0"
     },
     "engines": {
         "node": ">=18.0.0"
