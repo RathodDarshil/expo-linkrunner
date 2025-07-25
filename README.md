@@ -6,7 +6,7 @@ An Expo plugin for integrating Linkrunner functionality into your Expo applicati
 
 For setup instructions, usage examples, and API reference, please visit:
 
-[Linkrunner Expo SDK Documentation](https://docs.linkrunner.io/sdk/expo/installation)
+[Linkrunner Expo Plugin Documentation](https://docs.linkrunner.io/sdk/expo/installation)
 
 ## License
 
